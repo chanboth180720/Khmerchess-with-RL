@@ -1,0 +1,23 @@
+def play_multiple_games(self, num_games, batch_num):
+        self.reset_statistics()
+        for _ in range(num_games):
+            self.board.reset()
+            self.move_count = 0
+            self.player_rewards = {1: 0, -1: 0}
+            self.play_game()
+
+        self.display_results(batch_num)
+
+# Initialize and run the game with First Training
+num_games = 1000
+game = KhmerChessGame()
+policy_network = game.policy_network
+game.play_multiple_games(num_games, batch_num='1-1000')
+
+# Save the trained model and optimizer state
+model_save_path = 'policy_network1000.pth'
+torch.save({
+    'model_state_dict': game.policy_network.state_dict(),
+    'optimizer_state_dict': game.optimizer.state_dict()
+}, model_save_path)
+print(f"Model and optimizer state saved as {model_save_path}")
